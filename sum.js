@@ -1,7 +1,7 @@
 // Small project for a GitHub Actions Demo Call
 
 function sum(a, b) {
-  return a - b;
+  return a + b;
 }
 
 function average(numbers) {
