@@ -1,0 +1,8 @@
+name: Mein erster Check
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: echo "Hallo Dev Worklows Call"
