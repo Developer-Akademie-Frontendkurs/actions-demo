@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: node --check sum.js
-      - run: node --check sum.test.js
+      - run: node --check test/sum.test.js
 
   test:
     runs-on: ubuntu-latest
