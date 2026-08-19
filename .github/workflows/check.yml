@@ -23,4 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node --version
-      - run: node --test
+      - name: Tests ausführen und Report speichern
+        run: node --test 2>&1 | tee test-report.txt
+        shell: bash
+      - name: Report hochladen
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report-node-${{ matrix.node-version }}
+          path: test-report.txt
