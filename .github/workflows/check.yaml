@@ -4,7 +4,14 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  check:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: node --check sum.js
+      - run: node --check sum.test.js
+
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
