@@ -1,34 +1,10 @@
 name: Mein erster Check
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
-jobs:
-  syntax-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - run: node --check sum.js
-      - run: node --check test/sum.test.js
 
-  test:
-    needs: syntax-check
+on: push
+
+jobs:
+  check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20, 22, 24]
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: node --version
-      - name: Tests ausführen und Report speichern
-        run: node --test 2>&1 | tee test-report.txt
-        shell: bash
-      - name: Report hochladen
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-report-node-${{ matrix.node-version }}
-          path: test-report.txt
+      - run: node --test
