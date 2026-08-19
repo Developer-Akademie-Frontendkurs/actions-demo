@@ -12,6 +12,7 @@ jobs:
       - run: node --check test/sum.test.js
 
   test:
+    needs: syntax-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
