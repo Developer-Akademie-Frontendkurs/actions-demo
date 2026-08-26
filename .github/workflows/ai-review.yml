@@ -1,0 +1,64 @@
+name: KI-Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  # Job 1: Die KI liest den Diff - und darf AUSSCHLIESSLICH lesen.
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      final_message: ${{ steps.codex.outputs.final-message }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Der zusammengefuehrte Stand aus PR-Branch + Ziel-Branch
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          fetch-depth: 0
+          # Kein Git-Token im Arbeitsverzeichnis zuruecklassen
+          persist-credentials: false
+
+      - name: Codex-Review
+        id: codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ":read-only"
+          prompt: |
+            Reviewe die Aenderungen in diesem Pull Request auf Deutsch.
+            Vergleiche gegen den Ziel-Branch:
+            git diff origin/${{ github.event.pull_request.base.ref }}...HEAD
+
+            Fokus:
+            - Logikfehler und Off-by-one-Fehler
+            - Sicherheitsprobleme (Secrets, Injection, unsichere Defaults)
+            - Fehlende oder unzureichende Tests
+
+            Sei konkret: Datei und Zeile nennen - als reiner Text im
+            Format pfad/datei.ts:zeile, relativ zum Repo-Wurzelverzeichnis.
+            Keine Markdown-Links, keine absoluten Pfade.
+            Kein Lob, keine Floskeln.
+            Maximal 3 Anmerkungen - nur echte Probleme.
+
+  # Job 2: Kommentieren - und darf AUSSCHLIESSLICH das.
+  comment:
+    runs-on: ubuntu-latest
+    needs: review
+    if: needs.review.outputs.final_message != ''
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@v9
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: process.env.REVIEW,
+            });
+        env:
+          REVIEW: ${{ needs.review.outputs.final_message }}
