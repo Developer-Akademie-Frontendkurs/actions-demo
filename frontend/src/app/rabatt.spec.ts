@@ -15,6 +15,6 @@ describe('rabattProzent', () => {
   });
 
   it('gibt 5 % bei 30 Artikeln', () => {
-    expect(rabattProzent(30)).toBe(7);
+    expect(rabattProzent(30)).toBe(5);
   });
 });
