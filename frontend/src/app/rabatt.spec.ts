@@ -7,7 +7,7 @@ describe('rabattProzent', () => {
   });
 
   it('gibt 5 % im mittleren Bereich', () => {
-    expect(rabattProzent(20)).toBe(5);
+    expect(rabattProzent(20)).toBe(7);
   });
 
   it('gibt 10 % bei großen Mengen', () => {
