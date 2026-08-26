@@ -13,4 +13,8 @@ describe('rabattProzent', () => {
   it('gibt 10 % bei großen Mengen', () => {
     expect(rabattProzent(100)).toBe(10);
   });
+
+  it('gibt 5 % bei 30 Artikeln', () => {
+    expect(rabattProzent(30)).toBe(7);
+  });
 });
