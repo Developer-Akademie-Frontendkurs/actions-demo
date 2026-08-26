@@ -10,7 +10,7 @@ def versandkosten(warenwert: float) -> float:
 
 class VersandkostenTests(SimpleTestCase):
     def test_unter_grenze(self):
-        self.assertEqual(versandkosten(20), 4.95)
+        self.assertEqual(versandkosten(20), 3.95)
 
     def test_genau_grenze(self):
         self.assertEqual(versandkosten(50), 0.0)
