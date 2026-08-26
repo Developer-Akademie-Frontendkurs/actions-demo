@@ -37,7 +37,10 @@ jobs:
             - Sicherheitsprobleme (Secrets, Injection, unsichere Defaults)
             - Fehlende oder unzureichende Tests
 
-            Sei konkret: Datei und Zeile nennen. Kein Lob, keine Floskeln.
+            Sei konkret: Datei und Zeile nennen - als reiner Text im
+            Format pfad/datei.ts:zeile, relativ zum Repo-Wurzelverzeichnis.
+            Keine Markdown-Links, keine absoluten Pfade.
+            Kein Lob, keine Floskeln.
             Maximal 3 Anmerkungen - nur echte Probleme.
 
   # Job 2: Kommentieren - und darf AUSSCHLIESSLICH das.
