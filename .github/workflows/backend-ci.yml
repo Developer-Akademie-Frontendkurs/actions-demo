@@ -1,0 +1,40 @@
+name: Backend CI (Django)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Dependencies installieren
+        run: pip install -r requirements.txt
+
+      - name: Smoke-Test (Django-Systemcheck)
+        run: python manage.py check
+
+      - name: Tests
+        run: python manage.py test --verbosity 2
