@@ -17,3 +17,6 @@ class VersandkostenTests(SimpleTestCase):
 
     def test_ueber_grenze(self):
         self.assertEqual(versandkosten(80), 0.0)
+
+    def test_knapp_unter_grenze(self):
+        self.assertEqual(versandkosten(49), 0.0)
